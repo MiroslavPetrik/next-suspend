@@ -7,6 +7,12 @@ It returns an enhanced `<Suspense>` component, which awaits the `params` and ren
 npm i next-suspend
 ```
 
+## Motivation
+
+The `suspend` utility makes it easy to build layouts where it appears that individual values are suspended, but in practice only one entity is awaited:
+
+![motivation](./motivation.png)
+
 ## Getting started
 
 ```tsx
@@ -24,9 +30,7 @@ export const SuspendedProduct = suspend(
 );
 
 // 2. Pass the params & render values suspensefully:
-export default async function Page({
-  params,
-}: PageProps<"/inventory/[productId]">) {
+export default function Page({ params }: PageProps<"/inventory/[productId]">) {
   return (
     <div>
       <Property icon={<TbGardenCart />}>
