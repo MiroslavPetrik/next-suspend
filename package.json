@@ -1,0 +1,48 @@
+{
+  "name": "next-suspend",
+  "version": "1.0.0",
+  "description": "Suspensfully access data by page params.",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/MiroslavPetrik/next-suspend.git"
+  },
+  "keywords": [
+    "react",
+    "nextjs",
+    "suspense",
+    "cache"
+  ],
+  "license": "ISC",
+  "author": "Miroslav Petrik",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "files": [
+    "/dist"
+  ],
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "module": "./dist/index.mjs",
+      "types": "./dist/index.d.mts",
+      "default": "./dist/index.mjs"
+    }
+  },
+  "scripts": {
+    "build": "tsdown src/index.ts --minify"
+  },
+  "peerDependencies": {
+    "react": ">=19",
+    "react-dom": ">=19"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.7",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "tsdown": "^0.23.0",
+    "typescript": "^7.0.2"
+  }
+}
