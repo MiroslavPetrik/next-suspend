@@ -12,7 +12,7 @@ npm i next-suspend
 ```tsx
 import { suspend } from "next-suspend";
 
-// 1. Setup your data resolver
+// 1. Setup your data resolver:
 export const SuspendedProduct = suspend(
   async ({ productId }: { productId: string }) => {
     const product = await db.select.productById({ productId });
@@ -23,7 +23,7 @@ export const SuspendedProduct = suspend(
   },
 );
 
-// 2. Pass the params & render values suspensfully
+// 2. Pass the params & render values suspensefully:
 export default async function Page({
   params,
 }: PageProps<"/inventory/[productId]">) {
@@ -50,7 +50,9 @@ export default async function Page({
 }
 ```
 
-Your resolver will run once per params. The page can now the titles (Product & Description) into a static shell.
+Your resolver will run once per params. The page can now render the titles (Product & Description) into a static shell for an instant navigation:
+
+![demo](./demo.gif)
 
 ## Helper types
 
