@@ -1,5 +1,8 @@
 # next-suspend
 
+The `suspend` utility runs your data resolver function through `React.cache` using your Next.js page `params` as the cache keys.
+It returns an enhanced `<Suspense>` component, which awaits the `params` and renders the resolved value through a children prop.
+
 ```
 npm i next-suspend
 ```
