@@ -1,6 +1,6 @@
 {
   "name": "next-suspend",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Suspensfully access data by page params.",
   "publishConfig": {
     "access": "public"
@@ -15,7 +15,7 @@
     "suspense",
     "cache"
   ],
-  "license": "ISC",
+  "license": "MIT",
   "author": "Miroslav Petrik",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
