@@ -27,11 +27,9 @@ export function suspend<Params extends Record<string, string>, Result>(
     }
   >;
 
-  return async function Suspended({ params, children, ...props }: Props) {
+  return function Suspended({ params, children, ...props }: Props) {
     return (
-      <Suspense {...props}>
-        {resolveFromCache(params).then((value) => children(value))}
-      </Suspense>
+      <Suspense {...props}>{resolveFromCache(params).then(children)}</Suspense>
     );
   };
 }
