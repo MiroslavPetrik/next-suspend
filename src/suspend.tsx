@@ -6,7 +6,7 @@ import {
   type SuspenseProps,
 } from "react";
 
-import { SuspendContext } from "./context";
+import { SuspendContext } from "./client";
 
 /**
  * A rendering utility.
