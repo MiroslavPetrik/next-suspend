@@ -167,3 +167,13 @@ const { Suspend: Product } = suspend(
   },
 );
 ```
+
+## Troubleshooting
+
+### My query still runs twice
+
+The `queryCache` uses the `params` promise as the key, so you are using two different params. This can happen if you use both layout & page params, which are different promises.
+
+If you use the `<Provider>` in the layout, then stream the data to client with the `useSuspend()` and don't use the `<Suspend>` in your page.
+
+Note that both the `<Provider>` and the `<Suspend>` server components can be used in both page & layout, so if you are static shell maxxing your page with the `<Suspend>`, also render the `<Provider>` in your page (if needed) so they share the same `params`.
