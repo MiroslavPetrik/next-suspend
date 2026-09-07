@@ -56,6 +56,8 @@ export default function Page({ params }: PageProps<"/market/[productId]">) {
 
 Your query will run once per params. The page can now render the titles (Product & Description) into a static shell for an instant navigation:
 
+![demo](./demo.gif)
+
 ## Usage w/ client components
 
 Your suspend query [can be streamed to the client](https://nextjs.org/docs/app/guides/single-page-applications#using-reacts-use-within-a-context-provider) with the `useSuspend()` hook consuming a promise from a context provider:
@@ -143,8 +145,6 @@ export default function ProductPage() {
   );
 }
 ```
-
-![demo](./demo.gif)
 
 ## Helper types
 
