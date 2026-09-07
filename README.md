@@ -155,12 +155,14 @@ Simplify the data resolvers, so their params are typed by your routes:
 import type { AppRoutes } from "@/../.next/types/routes";
 
 declare global {
-  type Suspended<Route extends AppRoutes> = Awaited<PageProps<Route>["params"]>;
+  type SuspendParams<Route extends AppRoutes> = Awaited<
+    PageProps<Route>["params"]
+  >;
 }
 
-// 2. Get params by Page
-const SuspendedProduct = suspend(
-  async ({ productId }: Suspended<"/market/[productId]">) => {
+// 2. Get params by a route:
+const { Suspend: Product } = suspend(
+  async ({ productId }: SuspendParams<"/market/[productId]">) => {
     // ...
   },
 );
