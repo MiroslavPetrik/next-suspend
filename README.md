@@ -92,7 +92,7 @@ export default function ProductLayout({
 
 ```tsx
 // app/market/[productId]/components.tsx
-import { useSuspend } from "next-suspend";
+import { useSuspend } from "next-suspend/client";
 import type { Product } from "./product";
 
 // 3. Type the context value:

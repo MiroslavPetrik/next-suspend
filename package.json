@@ -1,6 +1,6 @@
 {
   "name": "next-suspend",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Suspensfully access data by page params.",
   "publishConfig": {
     "access": "public"
@@ -28,10 +28,16 @@
       "module": "./dist/index.mjs",
       "types": "./dist/index.d.mts",
       "default": "./dist/index.mjs"
+    },
+    "./client": {
+      "import": "./dist/client.mjs",
+      "module": "./dist/client.mjs",
+      "types": "./dist/client.d.mts",
+      "default": "./dist/client.mjs"
     }
   },
   "scripts": {
-    "build": "tsdown src/index.ts --minify"
+    "build": "tsdown src/index.ts src/client.ts --minify"
   },
   "peerDependencies": {
     "react": ">=19",
