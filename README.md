@@ -13,6 +13,15 @@ The `suspend` utility makes it easy to build layouts where it appears that indiv
 
 ![motivation](./motivation.png)
 
+### Maximize the static shell & minimize the loading skeleton
+
+The layout above could use one `<Suspense>` with a huge SkeletonLayout
+as the fallback, where we would reuse the grid, cards and property components.
+
+The `suspend()` utility enables us to **minimize the skeleton size** by using multiple `<Suspend>` components - one for each object property.
+
+This alleviates the need to reuse the labels, cards or grid elements in the fallback, which makes it easier to **achieve zero layout shift** during the suspense transition.
+
 ## Usage
 
 ```tsx
