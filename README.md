@@ -41,7 +41,7 @@ export default function Page({ params }: PageProps<"/market/[productId]">) {
           </Product>
         </PropertyValue>
       </Property>
-      <Property icon={<TbGardenCart />}>
+      <Property icon={<TbFileDescription />}>
         <PropertyTitle>Description</PropertyTitle>
         <PropertyValue>
           <Product params={params} fallback={<SkeletonLine />}>
@@ -135,7 +135,7 @@ export default function ProductPage() {
           <ProductName />
         </PropertyValue>
       </Property>
-      <Property icon={<TbGardenCart />}>
+      <Property icon={<TbFileDescription />}>
         <PropertyTitle>Description</PropertyTitle>
         <PropertyValue>
           <ProductDescription />
