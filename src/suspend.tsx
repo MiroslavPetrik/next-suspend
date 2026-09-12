@@ -13,22 +13,27 @@ import { SuspendContext } from "./client";
  * @param query - The function to cache by the page params promise.
  * @returns A component to render the cached result suspense-fully.
  */
-export function suspend<Params extends Record<string, string>, Result>(
-  query: (params: Params) => Promise<Result>,
+export function suspend<Query extends (params: any) => Promise<any>>(
+  query: Query,
 ) {
+  type Params = Parameters<Query>[0];
+  type Result = Awaited<ReturnType<Query>>;
+
   /**
-   * The queryFn cached by the page params.
+   * The queryFn cached by the page params, called without arguments when no params are given.
    */
-  const queryCache = cache(async (params: Promise<Params>) =>
-    query(await params),
+  const queryCache = cache(async (params?: Promise<Params>) =>
+    params
+      ? query(await params)
+      : (query as unknown as () => Promise<Result>)(),
   );
 
-  type ParamsProps = {
-    /**
-     * The params promise from your PageProps.
-     */
-    params: Promise<Params>;
-  };
+  /**
+   * The params promise from your PageProps, required only when your resolver takes params.
+   */
+  type ParamsProps = Parameters<Query>["length"] extends 0
+    ? { params?: never }
+    : { params: Promise<Params> };
 
   type Props = Prettify<
     Omit<SuspenseProps, "children"> &
@@ -47,7 +52,9 @@ export function suspend<Params extends Record<string, string>, Result>(
    */
   function Provider({ params, children }: PropsWithChildren<ParamsProps>) {
     return (
-      <SuspendContext value={queryCache(params)}>{children}</SuspendContext>
+      <SuspendContext value={params ? queryCache(params) : queryCache()}>
+        {children}
+      </SuspendContext>
     );
   }
 
@@ -55,7 +62,11 @@ export function suspend<Params extends Record<string, string>, Result>(
    * A Suspense component to render the cached results by page params.
    */
   function Suspend({ params, children, ...props }: Props) {
-    return <Suspense {...props}>{queryCache(params).then(children)}</Suspense>;
+    return (
+      <Suspense {...props}>
+        {(params ? queryCache(params) : queryCache()).then(children)}
+      </Suspense>
+    );
   }
 
   return { queryCache, Suspend, Provider };
