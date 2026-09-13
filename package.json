@@ -1,6 +1,6 @@
 {
   "name": "next-suspend",
-  "version": "1.1.2",
+  "version": "1.2.0",
   "description": "Suspensfully access data by page params.",
   "publishConfig": {
     "access": "public"
