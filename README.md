@@ -28,7 +28,7 @@ This alleviates the need to reuse the labels, cards or grid elements in the fall
 import { suspend } from "next-suspend";
 
 // 1. Setup your data query:
-export const { Suspend: Product } = suspend(
+const { Suspend: Product } = suspend(
   async ({ productId }: { productId: string }) => {
     const product = await db.select.productById({ productId });
     if (!product) {
@@ -66,6 +66,53 @@ export default function Page({ params }: PageProps<"/market/[productId]">) {
 Your query will run once per params. The page can now render the titles (Product & Description) into a static shell for an instant navigation:
 
 ![demo](./demo.gif)
+
+## `withSuspend` higher-order component
+
+Reduce the boilerplate of passing the `params` prop. The `withSuspend()` utility passes both the `params` and the `searchParams`
+to your `<Suspend />` component, which you receive in your Page props:
+
+```tsx
+import { suspend, withSuspend, type PageSuspend } from "next-suspend";
+
+type Params = Awaited<PageProps<"/market/[productId]">["params"]>;
+
+// 1. Setup your data query:
+const { Suspend } = suspend(async ({ productId }: Params) => {
+  const product = await db.select.productById({ productId });
+  if (!product) {
+    notFound();
+  }
+  return product;
+});
+
+// 2. Define page receiving the `Suspend` component via props:
+function Page({ Suspend: Product }: PageSuspend<typeof Suspend>) {
+  return (
+    <>
+      <Property icon={<TbGardenCart />}>
+        <PropertyTitle>Product</PropertyTitle>
+        <PropertyValue>
+          <Product fallback={<SkeletonLine />}>
+            {({ name }) => <span>{name}</span>}
+          </Product>
+        </PropertyValue>
+      </Property>
+      <Property icon={<TbFileDescription />}>
+        <PropertyTitle>Description</PropertyTitle>
+        <PropertyValue>
+          <Product fallback={<SkeletonLine />}>
+            {({ description }) => <span>{description}</span>}
+          </Product>
+        </PropertyValue>
+      </Property>
+    </>
+  );
+}
+
+// 3. Export the page
+export default withSuspend({ Suspend })(Page);
+```
 
 ## Usage w/ client components
 
