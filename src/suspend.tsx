@@ -11,10 +11,17 @@ import { SuspendContext } from "./client";
 /**
  * A rendering utility.
  * @param query - The function to cache by the page params promise.
+ * @param options - Additional options to set a shared Suspense fallback.
  * @returns A component to render the cached result suspense-fully.
  */
 export function suspend<Query extends (params: any) => Promise<any>>(
   query: Query,
+  options?: {
+    /**
+     * A shared Suspense fallback to display while the query is loading.
+     */
+    fallback: ReactNode;
+  },
 ) {
   type Params = Parameters<Query>[0];
   type Result = Awaited<ReturnType<Query>>;
@@ -63,7 +70,7 @@ export function suspend<Query extends (params: any) => Promise<any>>(
    */
   function Suspend({ params, children, ...props }: Props) {
     return (
-      <Suspense {...props}>
+      <Suspense fallback={options?.fallback} {...props}>
         {(params ? queryCache(params) : queryCache()).then(children)}
       </Suspense>
     );
