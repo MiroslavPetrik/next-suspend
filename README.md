@@ -7,6 +7,10 @@ It returns an enhanced [`<Suspense>` component, which awaits the `params` ](http
 npm i next-suspend
 ```
 
+<a aria-label="NPM version" href="https://www.npmjs.com/package/next-suspend">
+  <img alt="NPM Version" src="https://img.shields.io/npm/v/next-suspend?style=for-the-badge&labelColor=202632&logo=npm">
+</a>
+
 ## Motivation
 
 The `suspend` utility makes it easy to build layouts where it appears that individual values are suspended, but in practice only one entity is awaited:
@@ -36,6 +40,7 @@ const { Suspend: Product } = suspend(
     }
     return product;
   },
+  { fallback: <SkeletonLine /> },
 );
 
 // 2. Pass the params & render values suspensefully:
@@ -45,15 +50,13 @@ export default function Page({ params }: PageProps<"/market/[productId]">) {
       <Property icon={<TbGardenCart />}>
         <PropertyTitle>Product</PropertyTitle>
         <PropertyValue>
-          <Product params={params} fallback={<SkeletonLine />}>
-            {({ name }) => <span>{name}</span>}
-          </Product>
+          <Product params={params}>{({ name }) => <span>{name}</span>}</Product>
         </PropertyValue>
       </Property>
       <Property icon={<TbFileDescription />}>
         <PropertyTitle>Description</PropertyTitle>
         <PropertyValue>
-          <Product params={params} fallback={<SkeletonLine />}>
+          <Product params={params}>
             {({ description }) => <span>{description}</span>}
           </Product>
         </PropertyValue>
@@ -78,13 +81,16 @@ import { suspend, withSuspend, type PageSuspend } from "next-suspend";
 type Params = Awaited<PageProps<"/market/[productId]">["params"]>;
 
 // 1. Setup your data query:
-const { Suspend } = suspend(async ({ productId }: Params) => {
-  const product = await db.select.productById({ productId });
-  if (!product) {
-    notFound();
-  }
-  return product;
-});
+const { Suspend } = suspend(
+  async ({ productId }: Params) => {
+    const product = await db.select.productById({ productId });
+    if (!product) {
+      notFound();
+    }
+    return product;
+  },
+  { fallback: <SkeletonLine /> },
+);
 
 // 2. Define page receiving the `Suspend` component via props:
 function Page({ Suspend: Product }: PageSuspend<typeof Suspend>) {
@@ -93,17 +99,13 @@ function Page({ Suspend: Product }: PageSuspend<typeof Suspend>) {
       <Property icon={<TbGardenCart />}>
         <PropertyTitle>Product</PropertyTitle>
         <PropertyValue>
-          <Product fallback={<SkeletonLine />}>
-            {({ name }) => <span>{name}</span>}
-          </Product>
+          <Product>{({ name }) => <span>{name}</span>}</Product>
         </PropertyValue>
       </Property>
       <Property icon={<TbFileDescription />}>
         <PropertyTitle>Description</PropertyTitle>
         <PropertyValue>
-          <Product fallback={<SkeletonLine />}>
-            {({ description }) => <span>{description}</span>}
-          </Product>
+          <Product>{({ description }) => <span>{description}</span>}</Product>
         </PropertyValue>
       </Property>
     </>
